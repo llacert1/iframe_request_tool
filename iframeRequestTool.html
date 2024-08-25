@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modify iFrame Params</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            background-color: #e6f7ff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 800px;
+            max-width: 100%;
+            overflow-y: auto;
+            max-height: calc(100vh - 40px);
+        }
+
+        .sub-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #d9f0ff;
+            border-radius: 10px;
+        }
+
+        .sub-container h2 {
+            text-align: center;
+            color: #007acc;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .form-group .input-container {
+            flex: 0 0 48%;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #007acc;
+        }
+
+        .form-group input[type="text"], .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #b3e0ff;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        .form-group input[type="checkbox"] {
+            margin-top: 10px;
+            transform: scale(1.2);
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007acc;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .form-group button:hover {
+            background-color: #005c99;
+        }
+
+        .iframe-container {
+            margin-top: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            height: 500px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .log-container {
+            margin-top: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            height: 500px;
+        }
+
+        .log-container h3 {
+            text-align: center;
+            color: #007acc;
+        }
+
+        .log-content {
+            max-height: 220px;
+            overflow-y: auto;
+            background-color: #f0f8ff;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .clear-button {
+            margin-top: 20px;
+            background-color: #ff6666;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .clear-button:hover {
+            background-color: #cc0000;
+        }
+
+        .file-actions {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .file-actions button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 48%;
+            font-size: 16px;
+        }
+
+        .file-actions button:hover {
+            background-color: #45a049;
+        }
+
+        .file-input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sub-container for Title -->
+        <div class="sub-container">
+            <h2>Iframe Request Tool</h2>
+        </div>
+
+        <!-- Sub-container for Parameters and Input Boxes -->
+        <div class="sub-container">
+            <h2>Modify iFrame Parameters</h2>
+
+            <!-- HTTP Method Selection -->
+            <div class="form-group">
+                <label for="httpMethod">HTTP Method:</label>
+                <select id="httpMethod">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option>
+                    <option value="PATCH">PATCH</option>
+                    <option value="HEAD">HEAD</option>
+                    <option value="OPTIONS">OPTIONS</option>
+                </select>
+            </div>
+
+            <!-- Base URL Input -->
+            <div class="form-group">
+                <label for="baseUrl">Base URL:</label>
+                <input type="text" id="baseUrl" placeholder="Enter Base URL" value="your_default_url_here">
+            </div>
+
+            <!-- Parameters -->
+            <div class="form-group">
+                <!-- Parameter 1 -->
+                <div class="input-container">
+                    <label for="paramName1">Param 1 Name:</label>
+                    <input type="text" id="paramName1" value="param1" placeholder="Enter Param 1 Name">
+                    <label for="param1">Param 1 Value:</label>
+                    <input type="text" id="param1" placeholder="Enter Param 1">
+                    <label><input type="checkbox" id="param1Enabled" checked> Enable Param 1</label>
+                </div>
+
+                <!-- Parameter 2 -->
+                <div class="input-container">
+                    <label for="paramName2">Param 2 Name:</label>
+                    <input type="text" id="paramName2" value="param2" placeholder="Enter Param 2 Name">
+                    <label for="param2">Param 2 Value:</label>
+                    <input type="text" id="param2" placeholder="Enter Param 2">
+                    <label><input type="checkbox" id="param2Enabled" checked> Enable Param 2</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <!-- Parameter 3 -->
+                <div class="input-container">
+                    <label for="paramName3">Param 3 Name:</label>
+                    <input type="text" id="paramName3" value="param3" placeholder="Enter Param 3 Name">
+                    <label for="param3">Param 3 Value:</label>
+                    <input type="text" id="param3" placeholder="Enter Param 3">
+                    <label><input type="checkbox" id="param3Enabled" checked> Enable Param 3</label>
+                </div>
+
+                <!-- Parameter 4 -->
+                <div class="input-container">
+                    <label for="paramName4">Param 4 Name:</label>
+                    <input type="text" id="paramName4" value="param4" placeholder="Enter Param 4 Name">
+                    <label for="param4">Param 4 Value:</label>
+                    <input type="text" id="param4" placeholder="Enter Param 4">
+                    <label><input type="checkbox" id="param4Enabled" checked> Enable Param 4</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <!-- Parameter 5 -->
+                <div class="input-container">
+                    <label for="paramName5">Param 5 Name:</label>
+                    <input type="text" id="paramName5" value="param5" placeholder="Enter Param 5 Name">
+                    <label for="param5">Param 5 Value:</label>
+                    <input type="text" id="param5" placeholder="Enter Param 5">
+                    <label><input type="checkbox" id="param5Enabled" checked> Enable Param 5</label>
+                </div>
+
+                <!-- Parameter 6 -->
+                <div class="input-container">
+                    <label for="paramName6">Param 6 Name:</label>
+                    <input type="text" id="paramName6" value="param6" placeholder="Enter Param 6 Name">
+                    <label for="param6">Param 6 Value:</label>
+                    <input type="text" id="param6" placeholder="Enter Param 6">
+                    <label><input type="checkbox" id="param6Enabled" checked> Enable Param 6</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button onclick="updateIframe()">Update iFrame</button>
+            </div>
+        </div>
+
+        <!-- Iframe Container -->
+        <div class="iframe-container">
+            <iframe id="myIframe" src=""></iframe>
+        </div>
+
+        <!-- Log Container -->
+        <div class="log-container">
+            <h3>Request and Response Log</h3>
+            <div class="log-content" id="logContent"></div>
+        </div>
+
+        <!-- File Actions -->
+        <div class="file-actions">
+            <button onclick="saveToFile()">Save to File</button>
+            <button onclick="document.getElementById('fileInput').click()">Upload File</button>
+            <input type="file" id="fileInput" class="file-input" accept=".json" onchange="loadFromFile(event)">
+        </div>
+
+        <!-- Clear Button -->
+        <button class="clear-button" onclick="clearLogsAndIframe()">Clear iFrame and Logs</button>
+    </div>
+
+    <script>
+        function updateIframe() {
+            var baseUrl = document.getElementById('baseUrl').value;
+            var httpMethod = document.getElementById('httpMethod').value;
+
+            var params = [];
+            for (var i = 1; i <= 6; i++) {
+                var paramName = document.getElementById('paramName' + i).value;
+                var paramValue = document.getElementById('param' + i).value;
+                var paramEnabled = document.getElementById('param' + i + 'Enabled').checked;
+
+                if (paramEnabled && paramName && paramValue) {
+                    params.push(`${encodeURIComponent(paramName)}=${encodeURIComponent(paramValue)}`);
+                }
+            }
+
+            var iframeSrc = baseUrl + '?' + params.join('&');
+            document.getElementById('myIframe').src = iframeSrc;
+
+            // Log the request
+            var logContent = document.getElementById('logContent');
+            logContent.innerHTML += `<strong>${httpMethod} Request Sent:</strong> ` + iframeSrc + '<br>';
+
+            // Capture and log the response
+            var iframe = document.getElementById('myIframe');
+            iframe.onload = function() {
+                var responseContent = iframe.contentWindow.document.body.innerHTML;
+                logContent.innerHTML += '<strong>Response Received:</strong> ' + responseContent + '<br><hr>';
+                logContent.scrollTop = logContent.scrollHeight; // Scroll to bottom
+            };
+        }
+
+        function clearLogsAndIframe() {
+            document.getElementById('myIframe').src = '';
+            document.getElementById('logContent').innerHTML = '';
+        }
+
+        function saveToFile() {
+            var baseUrl = document.getElementById('baseUrl').value;
+            var httpMethod = document.getElementById('httpMethod').value;
+
+            var params = {};
+            for (var i = 1; i <= 6; i++) {
+                var paramName = document.getElementById('paramName' + i).value;
+                var paramValue = document.getElementById('param' + i).value;
+                var paramEnabled = document.getElementById('param' + i + 'Enabled').checked;
+
+                if (paramEnabled && paramName && paramValue) {
+                    params[paramName] = paramValue;
+                }
+            }
+
+            var data = {
+                baseUrl: baseUrl,
+                httpMethod: httpMethod,
+                params: params
+            };
+
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+            var downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "params.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function loadFromFile(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                var data = JSON.parse(event.target.result);
+
+                document.getElementById('baseUrl').value = data.baseUrl || '';
+                document.getElementById('httpMethod').value = data.httpMethod || 'GET';
+
+                var params = data.params || {};
+                for (var i = 1; i <= 6; i++) {
+                    var paramName = document.getElementById('paramName' + i);
+                    var paramValue = document.getElementById('param' + i);
+                    var paramEnabled = document.getElementById('param' + i + 'Enabled');
+
+                    var paramNameKey = Object.keys(params)[i-1] || '';
+                    paramName.value = paramNameKey;
+                    paramValue.value = params[paramNameKey] || '';
+                    paramEnabled.checked = paramNameKey !== '';
+                }
+            };
+            reader.readAsText(file);
+        }
+    </script>
+</body>
+</html>
